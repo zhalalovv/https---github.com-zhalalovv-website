@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.left-menu {
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.left-menu h2 {
+    margin-bottom: 10px;
+}
+
+.center-content {
+    padding: 20px;
+}
+
+.center-content h1 {
+    margin-bottom: 20px;
+}
+
+.right-cart {
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.right-cart h2 {
+    margin-bottom: 10px;
+}
+
+#total {
+    margin-top: 20px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.card-img-top {
+    width: 50%;
+}

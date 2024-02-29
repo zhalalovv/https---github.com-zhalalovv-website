@@ -6,16 +6,17 @@ from flask import Flask, g, render_template, request, jsonify, url_for, send_fil
 import settings
 
 app = Flask(__name__, template_folder="templates")
+app = Flask(__name__, static_folder="templates/static")
 
 app.config['SECRET_KEY'] = settings.SECRET_KEY
 
 restourantsDataBase = [
-{'id': 1, 'restourant': 'Zotman pizza', 'rating': 4.9, 'feedback': 'Отлично', 'image': 'https://eda.yandex/images/3806023/9878eee76dae2cde78ca9aeec9eed3d1-450x300.jpg', 'href': '/zotmanpizza'},
-{'id': 2, 'restourant': 'Burger King', 'rating' : 4.5, 'feedback': 'Хорошо', 'image': 'https://eda.yandex/images/2353725/455defacc92cd9493e8dc3ff94ad9601-450x300.jpg', 'href': '/burgerking'},
-{'id': 3, 'restourant': 'Vanvok', 'rating': 4.7, 'feedback': 'Отлично', 'image': 'https://eda.yandex/images/1380298/53472fd06b242ff9d95c0b588c5d2484-450x300.jpg', 'href': '/vanvok'},
-{'id': 4, 'restourant': 'Вкусно и точка', 'rating': 4.8, 'feedback': 'Отлично', 'image':'https://eda.yandex/images/3724421/6f2f08dcfe935121fc72c6ee6e3a6508-450x300.JPG', 'href': '/mac'},
-{'id': 5, 'restourant': 'KFC', 'rating': 5, 'feedback': 'Отлично', 'image': 'https://eda.yandex/images/3559865/ee31782ce8a630a015b6b94fd07b3351-450x300.jpg', 'href': '/kfc'},
-{'id': 6, 'restourant': 'Кебабник', 'rating': 4.8, 'feedback': 'Хорошо', 'image': 'https://eda.yandex/images/3595156/0f479740074a1a671ae9d5a0ba21e18c-450x300.jpg', 'href': '/kebabnik'},
+{'id': 1, 'restourant': 'Zotman pizza', 'rating': 4.9, 'feedback': 'Отлично', 'image': 'static/images/zotman/zotman.jpg', 'href': '/zotmanpizza'},
+{'id': 2, 'restourant': 'Burger King', 'rating' : 4.5, 'feedback': 'Хорошо', 'image': 'static/images/burgerking/burgerking.jpg', 'href': '/burgerking'},
+{'id': 3, 'restourant': 'Vanvok', 'rating': 4.7, 'feedback': 'Отлично', 'image': 'static/images/vanvok/vanvok.jpg', 'href': '/vanvok'},
+{'id': 4, 'restourant': 'Вкусно и точка', 'rating': 4.8, 'feedback': 'Отлично','image': 'static/images/mac/mac.jpg', 'href': '/mac'},
+{'id': 5, 'restourant': 'KFC', 'rating': 5, 'feedback': 'Отлично', 'image': 'static/images/kfc/kfc.jpg', 'href': '/kfc'},
+{'id': 6, 'restourant': 'Кебабник', 'rating': 4.8, 'feedback': 'Хорошо', 'image': 'static/images/kebabnik/kebabnik.jpg', 'href': '/kebabnik'},
 ]
 
 @app.errorhandler(404)

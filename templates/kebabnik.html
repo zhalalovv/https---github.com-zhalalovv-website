@@ -4,45 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <style>
-        body {
-    font-family: Arial, sans-serif;
-}
-
-.left-menu {
-    padding: 20px;
-    background-color: #f0f0f0;
-}
-
-.left-menu h2 {
-    margin-bottom: 10px;
-}
-
-.center-content {
-    padding: 20px;
-}
-
-.center-content h1 {
-    margin-bottom: 20px;
-}
-
-.right-cart {
-    padding: 20px;
-    background-color: #f0f0f0;
-}
-
-.right-cart h2 {
-    margin-bottom: 10px;
-}
-
-#total {
-    margin-top: 20px;
-}
-
-button {
-    cursor: pointer;
-}
-    </style>
+    <style href="static/style.css"></style>
     <title>Document</title>
 </head>
 <body>
@@ -54,16 +16,16 @@ button {
                 </div>
                 <h2>Меню</h2>
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="#breakfast">Завтраки</a></li>
-                    <li class="list-group-item"><a href="#lunch">Обеды</a></li>
-                    <li class="list-group-item"><a href="#dinner">Ужины</a></li>
+                    <li class="list-group-item"><a href="#shaurma">Шаурма</a></li>
+                    <li class="list-group-item"><a href="#sneaks">Закуски</a></li>
+                    <li class="list-group-item"><a href="#drinks">Напитки</a></li>
                 </ul>
             </div>
 
             <div class="col-md-6 center-content">
                 <h1>Меню ресторана</h1>
-                <div id="breakfast">
-                    <h2>Завтраки</h2>
+                <div id="shaurma">
+                    <h2>Шаурма</h2>
                     <div class="card">
                         <img src="dish1.jpg" class="card-img-top" alt="Блюдо 1">
                         <div class="card-body">
@@ -74,20 +36,10 @@ button {
                             <button class="btn btn-primary" onclick="addToCart('Блюдо 1', 10)">Добавить в корзину</button>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="dish2.jpg" class="card-img-top" alt="Блюдо 2">
-                        <div class="card-body">
-                            <h3 class="card-title">Блюдо 2</h3>
-                            <p class="card-text">Описание блюда 2</p>
-                            <p class="card-text">Цена: $15</p>
-                            <p class="card-text">Кол-во грамм: 250г</p>
-                            <button class="btn btn-primary" onclick="addToCart('Блюдо 2', 15)">Добавить в корзину</button>
-                        </div>
-                    </div>
                 </div>
 
-                <div id="lunch" class="mt-4">
-                    <h2>Обеды</h2>
+                <div id="sneaks" class="mt-4">
+                    <h2>Закуски</h2>
                     <div class="card">
                         <img src="dish1.jpg" class="card-img-top" alt="Блюдо 1">
                         <div class="card-body">
@@ -98,21 +50,10 @@ button {
                             <button class="btn btn-primary" onclick="addToCart('Блюдо 1', 10)">Добавить в корзину</button>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="dish2.jpg" class="card-img-top" alt="Блюдо 2">
-                        <div class="card-body">
-                            <h3 class="card-title">Блюдо 2</h3>
-                            <p class="card-text">Описание блюда 2</p>
-                            <p class="card-text">Цена: $15</p>
-                            <p class="card-text">Кол-во грамм: 250г</p>
-                            <button class="btn btn-primary" onclick="addToCart('Блюдо 2', 15)">Добавить в корзину</button>
-                        </div>
-                    </div>
-
                 </div>
 
-                <div id="dinner" class="mt-4">
-                    <h2>Ужины</h2>
+                <div id="drinks" class="mt-4">
+                    <h2>Напитки</h2>
                     <div class="card">
                         <img src="dish1.jpg" class="card-img-top" alt="Блюдо 1">
                         <div class="card-body">
@@ -123,19 +64,7 @@ button {
                             <button class="btn btn-primary" onclick="addToCart('Блюдо 1', 10)">Добавить в корзину</button>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="dish2.jpg" class="card-img-top" alt="Блюдо 2">
-                        <div class="card-body">
-                            <h3 class="card-title">Блюдо 2</h3>
-                            <p class="card-text">Описание блюда 2</p>
-                            <p class="card-text">Цена: $15</p>
-                            <p class="card-text">Кол-во грамм: 250г</p>
-                            <button class="btn btn-primary" onclick="addToCart('Блюдо 2', 15)">Добавить в корзину</button>
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
 
 <div class="col-md-3 right-cart">
@@ -145,9 +74,5 @@ button {
     <p id="total">Итого: $0</p>
     <a href="/oplata" class="btn btn-success">Оплатить</a>
 </div>
-
-<script>
-
-</script>
     </body>
 </html>
