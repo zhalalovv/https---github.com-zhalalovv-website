@@ -66,6 +66,10 @@ def kebabnik():
 def optala():
     return render_template("oplata.html")
 
+@app.route("")
+def new():
+    return
+
 if __name__ == "__main__":
 ##    #Еще один способ добавления статической дирректории
     from werkzeug.middleware.shared_data import SharedDataMiddleware
