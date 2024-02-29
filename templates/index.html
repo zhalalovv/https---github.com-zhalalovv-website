@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+<div class="restounants">
+   <h1>Рестораны</h1>
+</div>
+<div class="container">
+  <div class="row">
+  {% for rest in restourants %}
+    <div class="col-md-4">
+      <div class="card">
+        <img src="{{rest['image']}}" class="card-img-top" alt="Картинка 1">
+        <div class="card-body">
+          <a href="{{ rest['href'] }}" style="color: black;">
+          <h4 class="card-title">"{{ rest['restourant'] }}"</h4>
+          </a>
+          <p class="card-text">Рейтинг: {{ rest['rating'] }} {{ rest['feedback'] }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endblock %}
