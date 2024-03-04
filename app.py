@@ -6,17 +6,16 @@ from flask import Flask, g, render_template, request, jsonify, url_for, send_fil
 import settings
 
 app = Flask(__name__, template_folder="templates")
-app = Flask(__name__, static_folder="templates/static")
 
 app.config['SECRET_KEY'] = settings.SECRET_KEY
 
 restourantsDataBase = [
-{'id': 1, 'restourant': 'Zotman pizza', 'rating': 4.9, 'feedback': 'Отлично', 'image': 'static/images/zotman/zotman.jpg', 'href': '/zotmanpizza'},
-{'id': 2, 'restourant': 'Burger King', 'rating' : 4.5, 'feedback': 'Хорошо', 'image': 'static/images/burgerking/burgerking.jpg', 'href': '/burgerking'},
-{'id': 3, 'restourant': 'Vanvok', 'rating': 4.7, 'feedback': 'Отлично', 'image': 'static/images/vanvok/vanvok.jpg', 'href': '/vanvok'},
-{'id': 4, 'restourant': 'Вкусно и точка', 'rating': 4.8, 'feedback': 'Отлично','image': 'static/images/mac/mac.jpg', 'href': '/mac'},
-{'id': 5, 'restourant': 'KFC', 'rating': 5, 'feedback': 'Отлично', 'image': 'static/images/kfc/kfc.jpg', 'href': '/kfc'},
-{'id': 6, 'restourant': 'Кебабник', 'rating': 4.8, 'feedback': 'Хорошо', 'image': 'static/images/kebabnik/kebabnik.jpg', 'href': '/kebabnik'},
+{'id': 1, 'restourant': 'Zotman pizza', 'rating': 4.9, 'feedback': 'Отлично', 'image': 'images/zotman/zotman.jpg', 'href': '/zotmanpizza'},
+{'id': 2, 'restourant': 'Burger King', 'rating' : 4.5, 'feedback': 'Хорошо', 'image': 'images/burgerking/burgerking.jpg', 'href': '/burgerking'},
+{'id': 3, 'restourant': 'Vanvok', 'rating': 4.7, 'feedback': 'Отлично', 'image': 'images/vanvok/vanvok.jpg', 'href': '/vanvok'},
+{'id': 4, 'restourant': 'Вкусно и точка', 'rating': 4.8, 'feedback': 'Отлично','image': 'images/mac/mac.jpg', 'href': '/mac'},
+{'id': 5, 'restourant': 'KFC', 'rating': 5, 'feedback': 'Отлично', 'image': 'images/kfc/kfc.jpg', 'href': '/kfc'},
+{'id': 6, 'restourant': 'Кебабник', 'rating': 4.8, 'feedback': 'Хорошо', 'image': 'images/kebabnik/kebabnik.jpg', 'href': '/kebabnik'},
 ]
 
 @app.errorhandler(404)
@@ -74,3 +73,4 @@ if __name__ == "__main__":
       '/': os.path.join(os.path.dirname(__file__), 'static')
     })
     app.run(host='0.0.0.0', port=5000, debug=True)
+    

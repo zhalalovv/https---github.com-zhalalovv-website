@@ -12,7 +12,7 @@
   {% for rest in restourants %}
     <div class="col-md-4">
       <div class="card">
-        <img src="{{rest['image']}}" class="card-img-top" alt="Картинка 1">
+        <img src="{{url_for('static', filename=rest['image'])}}" class="card-img-top" alt="Картинка 1">
         <div class="card-body">
           <a href="{{ rest['href'] }}" style="color: black;">
           <h4 class="card-title">{{ rest['restourant'] }}</h4>
