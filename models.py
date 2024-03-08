@@ -13,7 +13,15 @@ class restaurants(Base):
     rating = Column(Integer, nullable=False)
     feedback = Column(String(15), nullable=False, default="")
     image = Column(String(500), nullable=False, default="")
-    href = Column(String(30), nullable=False, default="")
+    href = Column(String(100), nullable=False, default="")
+
+class diches(Base):
+    __tablename__ = 'dishes'
+    id = Column(Integer, primary_key=True, default="", nullable=False)
+    weigth = Column(Integer, primary_key=True, default="", nullable=False)
+    price = Column(Integer, primary_key=True, default="", nullable=False)
+    discription = Column(String(500), primary_key=True, default="", nullable=False)
+
 
 def init_db():
     # import all modules here that might define models so that
