@@ -6,63 +6,48 @@ from sqlalchemy.sql import func
 from database import Base, db_session, engine as db_engine
 import datetime
 
-# "Ресторан"
+# Таблица "Ресторан"
 class Restaurant(Base):
     __tablename__ = 'restaurants'
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(25))
     photo = Column(String(500))
-    hours_of_operation = Column(String(10))
+    hours_of_operation = Column(String(25))
     rating = Column(Integer)
-    dishes = relationship('RestaurantDish', back_populates='restaurant')
-    orders = relationship('RestaurantOrder', back_populates='restaurant')
 
-# "Блюдо"
+# Таблица "Блюдо"
 class Dish(Base):
     __tablename__ = 'dishes'
+    rest_id = Column(Integer, ForeignKey('restaurants.id'))
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50))
     photo = Column(String(100))
     price = Column(Integer)
     weight = Column(Integer)
     category = Column(String(50))
-    restaurants = relationship('RestaurantDish', back_populates='dish')
-    orders = relationship('OrderDish', back_populates='dish')
+    restaurant = relationship('Restaurant', back_populates='name')
 
-# "Ресторан - Блюдо"
-class RestaurantDish(Base):
-    __tablename__ = 'restaurant_dishes'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
-    dish_id = Column(Integer, ForeignKey('dishes.id'))
-    restaurant = relationship('Restaurant', back_populates='dishes')
-    dish = relationship('Dish', back_populates='restaurants')
-
-# "Заказ"
+# Таблица "Заказ"
 class Order(Base):
     __tablename__ = 'orders'
     id = Column(Integer, primary_key=True, autoincrement=True)
     restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
-    restaurant_name = Column(String(25))
     order_date = Column(DateTime, default=func.utcnow)
-    order_time = Column(String(10))
-    order_amount = Column(Float)
     address = Column(String(255))
+    total = Column(Integer)
     recipient_name = Column(String(50))
     recipient_phone = Column(String(15))
     dishes = relationship('OrderDish', back_populates='order')
     restaurant = relationship('RestaurantOrder', back_populates='orders')
 
-# "Заказ - Блюдо"
+# Таблица "Заказ - Блюдо"
 class OrderDish(Base):
     __tablename__ = 'order_dishes'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    order_id = Column(Integer, ForeignKey('orders.id'))
+
+    order_id = Column(Integer, ForeignKey('orders.id'), primary_key=True)
     dish_id = Column(Integer, ForeignKey('dishes.id'))
-    quantity = Column(Integer)
+    price = relationship('Order', back_populates='total')
     dish = relationship('Dish', back_populates='orders')
-    order = relationship('OrderDish', back_populates='dishes')
-    
+    order = relationship('Order', back_populates='dishes')
 
 
 def init_db():

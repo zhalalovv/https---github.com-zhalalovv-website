@@ -2,6 +2,7 @@
 import os
 
 from flask import Flask, g, render_template, request, jsonify, url_for, send_file
+from models import db_session, Restaurant, Dish, Order, OrderDish
 
 import settings
 
