@@ -10,14 +10,14 @@ app = Flask(__name__, template_folder="templates")
 
 app.config['SECRET_KEY'] = settings.SECRET_KEY
 
-restourantsDataBase = [
-{'id': 1, 'restourant': 'Zotman pizza', 'rating': 4.9, 'feedback': 'Отлично', 'image': 'images/zotman/zotman.jpg', 'href': '/zotmanpizza'},
-{'id': 2, 'restourant': 'Burger King', 'rating' : 4.5, 'feedback': 'Хорошо', 'image': 'images/burgerking/burgerking.jpg', 'href': '/burgerking'},
-{'id': 3, 'restourant': 'Vanvok', 'rating': 4.7, 'feedback': 'Отлично', 'image': 'images/vanvok/vanvok.jpg', 'href': '/vanvok'},
-{'id': 4, 'restourant': 'Вкусно и точка', 'rating': 4.8, 'feedback': 'Отлично','image': 'images/mac/mac.jpg', 'href': '/mac'},
-{'id': 5, 'restourant': 'KFC', 'rating': 5, 'feedback': 'Отлично', 'image': 'images/kfc/kfc.jpg', 'href': '/kfc'},
-{'id': 6, 'restourant': 'Кебабник', 'rating': 4.8, 'feedback': 'Хорошо', 'image': 'images/kebabnik/kebabnik.jpg', 'href': '/kebabnik'},
-]
+#restourantsDataBase = [
+#{'id': 1, 'restourant': 'Zotman pizza', 'rating': 4.9, 'feedback': 'Отлично', 'image': 'images/zotman/zotman.jpg', 'href': '/zotmanpizza'},
+#{'id': 2, 'restourant': 'Burger King', 'rating' : 4.5, 'feedback': 'Хорошо', 'image': 'images/burgerking/burgerking.jpg', 'href': '/burgerking'},
+#{'id': 3, 'restourant': 'Vanvok', 'rating': 4.7, 'feedback': 'Отлично', 'image': 'images/vanvok/vanvok.jpg', 'href': '/vanvok'},
+#{'id': 4, 'restourant': 'Вкусно и точка', 'rating': 4.8, 'feedback': 'Отлично','image': 'images/mac/mac.jpg', 'href': '/mac'},
+#{'id': 5, 'restourant': 'KFC', 'rating': 5, 'feedback': 'Отлично', 'image': 'images/kfc/kfc.jpg', 'href': '/kfc'},
+#{'id': 6, 'restourant': 'Кебабник', 'rating': 4.8, 'feedback': 'Хорошо', 'image': 'images/kebabnik/kebabnik.jpg', 'href': '/kebabnik'},
+#]
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -25,7 +25,8 @@ def page_not_found(error):
 
 @app.route("/")
 def index():
-    return render_template("index.html", restourants = restourantsDataBase)
+    restaurants = db_session.query(Restaurant).all()
+    return render_template("index.html", rest = restaurants)
 
 @app.route("/login")
 def login():

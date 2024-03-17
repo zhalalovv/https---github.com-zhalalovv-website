@@ -14,17 +14,23 @@ class Restaurant(Base):
     photo = Column(String(500))
     hours_of_operation = Column(String(25))
     rating = Column(Integer)
+    href = Column(String(100))
+    # Отношение между рестораном и блюдами
+    dishes = relationship('Dish', back_populates='restaurant')
+    orders = relationship('Order', back_populates='restaurant')
 
 # Таблица "Блюдо"
 class Dish(Base):
     __tablename__ = 'dishes'
-    rest_id = Column(Integer, ForeignKey('restaurants.id'))
     id = Column(Integer, primary_key=True, autoincrement=True)
+    rest_id = Column(Integer, ForeignKey('restaurants.id'))
     photo = Column(String(100))
     price = Column(Integer)
     weight = Column(Integer)
     category = Column(String(50))
-    restaurant = relationship('Restaurant', back_populates='name')
+    # Отношение между блюдом и рестораном
+    restaurant = relationship('Restaurant', back_populates='dishes')
+    orders = relationship('OrderDish', back_populates='dish')
 
 # Таблица "Заказ"
 class Order(Base):
@@ -36,17 +42,21 @@ class Order(Base):
     total = Column(Integer)
     recipient_name = Column(String(50))
     recipient_phone = Column(String(15))
+    # Отношение между заказом и рестораном
+    restaurant = relationship('Restaurant', back_populates='orders')
+    # Отношение между заказом и блюдами
     dishes = relationship('OrderDish', back_populates='order')
-    restaurant = relationship('RestaurantOrder', back_populates='orders')
 
 # Таблица "Заказ - Блюдо"
 class OrderDish(Base):
     __tablename__ = 'order_dishes'
 
     order_id = Column(Integer, ForeignKey('orders.id'), primary_key=True)
-    dish_id = Column(Integer, ForeignKey('dishes.id'))
-    price = relationship('Order', back_populates='total')
+    dish_id = Column(Integer, ForeignKey('dishes.id'), primary_key=True)
+    price = Column(Integer)
+    # Отношение между блюдом и заказом
     dish = relationship('Dish', back_populates='orders')
+    # Отношение между заказом и блюдами
     order = relationship('Order', back_populates='dishes')
 
 
