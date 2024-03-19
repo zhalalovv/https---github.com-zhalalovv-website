@@ -1,36 +1,59 @@
-{% extends "main.html" %}
-
-{% block title %}Регистрация{% endblock %}
-
-{% block content %}
+{% extends "main.html" %} {% block title %}Регистрация{% endblock %} {% block
+content %}
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form>
-                <div class="form-group">
-                    <label for="username">Имя пользователя:</label>
-                    <input type="text" class="form-control" id="username" placeholder="Введите имя пользователя">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Введите email">
-                </div>
-                <div class="form-group">
-                    <label for="password">Пароль:</label>
-                    <input type="password" class="form-control" id="password" placeholder="Введите пароль">
-                </div>
-                <div class="form-group">
-                    <label for="confirm-password">Подтвердите пароль:</label>
-                    <input type="password" class="form-control" id="confirm-password" placeholder="Подтвердите пароль">
-                </div>
-                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-            </form>
-            <div class="login">
-                <a href="/login">Вернуться на вход</a>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="post">
+        <div class="form-group">
+          <label for="username">Имя пользователя:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Введите имя пользователя"
+          />
         </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Введите email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Пароль:</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Введите пароль"
+          />
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Подтвердите пароль:</label>
+          <input
+            type="password"
+            class="form-control"
+            id="confirm-password"
+            name="confirm_password"
+            placeholder="Подтвердите пароль"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Зарегистрироваться
+        </button>
+      </form>
+      <div class="login">
+        <a href="/login">Вернуться на вход</a>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock %}

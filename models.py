@@ -5,6 +5,8 @@ from sqlalchemy.orm import relationship, query_expression
 from sqlalchemy.sql import func
 from database import Base, db_session, engine as db_engine
 import datetime
+from flask_login import UserMixin
+from app import manager
 
 # Таблица "Ресторан"
 class Restaurant(Base):
@@ -24,6 +26,7 @@ class Dish(Base):
     __tablename__ = 'dishes'
     id = Column(Integer, primary_key=True, autoincrement=True)
     rest_id = Column(Integer, ForeignKey('restaurants.id'))
+    name = Column(String(100))
     photo = Column(String(100))
     price = Column(Integer)
     weight = Column(Integer)
@@ -50,7 +53,6 @@ class Order(Base):
 # Таблица "Заказ - Блюдо"
 class OrderDish(Base):
     __tablename__ = 'order_dishes'
-
     order_id = Column(Integer, ForeignKey('orders.id'), primary_key=True)
     dish_id = Column(Integer, ForeignKey('dishes.id'), primary_key=True)
     price = Column(Integer)
@@ -59,18 +61,26 @@ class OrderDish(Base):
     # Отношение между заказом и блюдами
     order = relationship('Order', back_populates='dishes')
 
+class User(Base, UserMixin):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
+    login = Column(String(32), unique=True)
+    password = Column(String(64))
+
 
 def init_db():
     # import all modules here that might define models so that
-    # they will be registered properly on the metadata.  Otherwise
+    # they will be registered properly on the metadAata.  Otherwise
     # you will have to import them first before calling init_db()
     from database import engine
     Base.metadata.create_all(bind=engine)
     db_session.commit()
 
+@manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.query.get(user_id)
 
 if __name__ == "__main__":
     init_db()
 
-    #print_columns(Payment, "created")
-    #print_schema(SoltButton)
