@@ -13,7 +13,10 @@ content %}
             alt="Изображение ресторана"
           />
           <div class="card-body">
-            <a href="{{ restaurant.href }}" style="color: black">
+            <a
+              href="{{ url_for('restaurant_by_id', id=restaurant.id) }}"
+              style="color: black"
+            >
               <h4 class="card-title">{{ restaurant.name }}</h4>
             </a>
             <p class="card-text">

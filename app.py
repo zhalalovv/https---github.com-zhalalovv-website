@@ -33,29 +33,45 @@ def login():
 def search():
     return render_template("search_res.html")
 
-@app.route("/zotmanpizza")
-def zotman():
-    return render_template("zotmanpizza.html")
+@app.route("/restaurant/<int:id>/")
+def restaurant_by_id(id):
+    from models import db_session, Restaurant, Dish
+    restaurant = db_session.query(Restaurant).filter(Restaurant.id == id).first()
+    if restaurant:
+        dishes = db_session.query(Dish).filter(Dish.rest_id == id).all()
+        dishes_by_category = {}
+        for dish in dishes:
+            category = dish.category
+            if category not in dishes_by_category:
+                dishes_by_category[category] = []
+            dishes_by_category[category].append(dish)
+        return render_template("mac.html", restaurant=restaurant, categories=dishes_by_category)
+    else:
+        return render_template("404.htm"), 404
 
-@app.route("/burgerking")
-def burgerking():
-    return render_template("burgerking.html")
+# @app.route("/zotmanpizza")
+# def zotman():
+#     return render_template("zotmanpizza.html")
 
-@app.route("/vanvok")
-def vanvok():
-    return render_template("vanvok.html")
+# @app.route("/burgerking")
+# def burgerking():
+#     return render_template("burgerking.html")
 
-@app.route("/mac")
-def mac():
-    return render_template("mac.html")
+# @app.route("/vanvok")
+# def vanvok():
+#     return render_template("vanvok.html")
 
-@app.route("/kfc")
-def kfc():
-    return render_template("kfc.html")
+# @app.route("/mac")
+# def mac():
+#     return render_template("mac.html")
 
-@app.route("/kebabnik")
-def kebabnik():
-    return render_template("kebabnik.html")
+# @app.route("/kfc")
+# def kfc():
+#     return render_template("kfc.html")
+
+# @app.route("/kebabnik")
+# def kebabnik():
+#     return render_template("kebabnik.html")
 
 @app.route("/oplata")
 def optala():
