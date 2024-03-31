@@ -10,13 +10,14 @@ from flask_login import login_required, login_user, logout_user
 def register():
     if request.method == 'GET':
         return render_template('registration.html')
-    login = request.form.get('username')
-    password = request.form.get('password')
-    user = User(login = login, password = password)
-    db_session.add(user)
-    db_session.commit()
-    login_user(user)
-    return render_template('registration.html')
+    elif request.method == 'POST':
+       login = request.form.get('username')
+       password = request.form.get('password')
+       user = User(login = login, password = password)
+       db_session.add(user)
+       db_session.commit()
+       login_user(user)
+       return render_template('registration.html')
 
 @app.route('/logout')
 @login_required

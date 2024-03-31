@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import os
 import uuid
 import settings
@@ -20,6 +19,10 @@ def index():
     from models import db_session, Restaurant
     restaurants = db_session.query(Restaurant).all()
     return render_template("index.html", rest = restaurants)
+
+@app.route("/registration")
+def registration():
+    return render_template("registration.html")
 
 @app.route("/login")
 def login():
