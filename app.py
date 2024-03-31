@@ -1,9 +1,8 @@
-# -*- coding: UTF-8 -*-
 import os
 import uuid
 import settings
 from flask_login import LoginManager
-from flask import Flask, g, render_template
+from flask import Flask, g, render_template, request, redirect, url_for, jsonify
 
 
 app = Flask(__name__, template_folder="templates")
@@ -46,8 +45,22 @@ def restaurant_by_id(id):
         return render_template("404.htm"), 404
 
 @app.route("/oplata")
-def optala():
+def oplata():
     return render_template("oplata.html")
+
+@app.route("/oplata/")
+def oplata_tovara():
+    from models import Order
+    if request.method == "GET":
+        return jsonify({"error": "Method not allowed."}), 405
+    address = request.form.get("address")
+    recipient_name = request.form.get("recipient_name")
+    recipient_phone = request.form.get("recipient_phone")
+    payment = Order(address=address, recipient_name=recipient_name, recipient_phone=recipient_phone)
+    db_session.add(payment)
+    db_session.commit()
+    return jsonify({"message": "Payment processed successfully."}), 200
+    
 
 @manager.user_loader
 def load_user(user_id):
@@ -56,7 +69,6 @@ def load_user(user_id):
 
 
 if __name__ == "__main__":
-##    #Еще один способ добавления статической дирректории
     from werkzeug.middleware.shared_data import SharedDataMiddleware
     from controller import *
     app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {

@@ -1,94 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <style>
-body {
-    font-family: Arial, sans-serif;
-}
+      body {
+        font-family: Arial, sans-serif;
+      }
 
-.left-menu {
-    padding: 20px;
-    background-color: #f0f0f0;
-}
+      .left-menu {
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
 
-.left-menu h2 {
-    margin-bottom: 10px;
-}
+      .left-menu h2 {
+        margin-bottom: 10px;
+      }
 
-.center-content {
-    padding: 20px;
-}
+      .center-content {
+        padding: 20px;
+      }
 
-.center-content h1 {
-    margin-bottom: 20px;
-}
+      .center-content h1 {
+        margin-bottom: 20px;
+      }
 
-.right-cart {
-    padding: 20px;
-    background-color: #f0f0f0;
-}
+      .right-cart {
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
 
-.right-cart h2 {
-    margin-bottom: 10px;
-}
+      .right-cart h2 {
+        margin-bottom: 10px;
+      }
 
-#total {
-    margin-top: 20px;
-}
+      #total {
+        margin-top: 20px;
+      }
 
-button {
-    cursor: pointer;
-}
+      button {
+        cursor: pointer;
+      }
     </style>
     <title>Оформление заказа</title>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container mt-4">
+      <h1>Оформление заказа</h1>
 
-<div class="container mt-4">
-    <h1>Оформление заказа</h1>
+      <ul id="cart-list" class="list-group mb-4"></ul>
 
-    <ul id="cart-list" class="list-group mb-4">
-    </ul>
-
-    <form id="order-form">
+      <form id="order-form" method="POST">
         <div class="form-group">
-            <label for="address">Адрес</label>
-            <input type="text" class="form-control" id="address" placeholder="Введите ваш адрес" required>
+          <label for="address">Адрес</label>
+          <input
+            type="text"
+            class="form-control"
+            id="address"
+            name="address"
+            placeholder="Введите ваш адрес"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="name">Имя получателя</label>
-            <input type="text" class="form-control" id="name" placeholder="Введите имя" required>
+          <label for="name">Имя получателя</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="recipient_name"
+            placeholder="Введите имя"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="phone">Телефон</label>
-            <input type="tel" class="form-control" id="phone" placeholder="Введите телефон" required>
+          <label for="phone">Телефон</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="phone"
+            name="recipient_phone"
+            placeholder="Введите телефон"
+            required
+          />
         </div>
 
         <div class="form-group">
-            <label for="payment">Способ оплаты</label>
-            <select class="form-control" id="payment" required>
-                <option value="card">Карта</option>
-                <option value="cash">Наличные</option>
-            </select>
+          <label for="payment">Способ оплаты</label>
+          <select class="form-control" id="payment" required>
+            <option value="card">Карта</option>
+            <option value="cash">Наличные</option>
+          </select>
         </div>
 
         <h2>Оплата товара</h2>
-<p id="item-info"></p>
-<button class="btn btn-success">Оплатить товар</button>
-    </form>
-</div>
+        <p id="item-info"></p>
+        <a href="/oplata/" class="btn btn-success">Оплатить товар</a>
+      </form>
+    </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-
-</script>
-
-</body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script></script>
+  </body>
 </html>
