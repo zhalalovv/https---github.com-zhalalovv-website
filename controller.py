@@ -24,6 +24,16 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    login = request.form.get("username")
+    password = request.form.get("password")
+    user = db_session.query(User).filter(User.login == login, User.password == password).first()
+    login_user(user)
+    return redirect(url_for("index"))
+
 @app.after_request
 def redirect_to_sign(response):
     if response.status_code == 401:

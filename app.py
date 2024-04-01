@@ -20,15 +20,11 @@ def index():
     restaurants = db_session.query(Restaurant).all()
     return render_template("index.html", rest = restaurants)
 
-@app.route("/login")
-def login():
-    return render_template("login.html")
-
 @app.route("/search")
 def search():
     return render_template("search_res.html")
 
-@app.route("/restaurant/<int:id>/")
+@app.route("/restaurant/<int:id>/menu")
 def restaurant_by_id(id):
     from models import db_session, Restaurant, Dish
     restaurant = db_session.query(Restaurant).filter(Restaurant.id == id).first()
@@ -40,28 +36,77 @@ def restaurant_by_id(id):
             if category not in dishes_by_category:
                 dishes_by_category[category] = []
             dishes_by_category[category].append(dish)
-        return render_template("mac.html", restaurant=restaurant, categories=dishes_by_category)
+        return render_template("menu.html", restaurant=restaurant, categories=dishes_by_category)
     else:
         return render_template("404.htm"), 404
-
-@app.route("/oplata")
-def oplata():
-    return render_template("oplata.html")
-
-@app.route("/oplata/")
-def oplata_tovara():
-    from models import Order
-    if request.method == "GET":
-        return jsonify({"error": "Method not allowed."}), 405
-    address = request.form.get("address")
-    recipient_name = request.form.get("recipient_name")
-    recipient_phone = request.form.get("recipient_phone")
-    payment = Order(address=address, recipient_name=recipient_name, recipient_phone=recipient_phone)
-    db_session.add(payment)
-    db_session.commit()
-    return jsonify({"message": "Payment processed successfully."}), 200
     
+def oplata_tovara_by_post():
+    from models import db_session, Order
+    if request.method == "GET":
+        return render_template("menu.html")
+    # Получение данных из запроса
+    order_data = request.json
 
+    # Создание нового заказа
+    new_order = Order(
+        restaurant_id=order_data.get("restaurant_id"),
+        order_date=order_data.get("order_date"),
+        total=order_data.get("total"),
+        address=order_data.get("address"),
+        recipient_name=order_data.get("recipient_name"),
+        recipient_phone=order_data.get("recipient_phone")
+    )
+
+    # Сохранение заказа в базе данных
+    db_session.add(new_order)
+    db_session.commit()
+
+    return jsonify({"success": True})
+
+# @app.route("/menu", methods=["GET","POST"])
+# def oplata_tovara_by_post():
+#     from models import db_session, Order
+#     if request.method == "GET":
+#         return render_template("menu.html")
+#     # Получение данных из запроса
+#     order_data = request.json
+
+#     # Создание нового заказа
+#     new_order = Order(
+#         restaurant_id=order_data.get("restaurant_id"),
+#         order_date=order_data.get("order_date"),
+#         total=order_data.get("total"),
+#         address=order_data.get("address"),
+#         recipient_name=order_data.get("recipient_name"),
+#         recipient_phone=order_data.get("recipient_phone")
+#     )
+
+#     # Сохранение заказа в базе данных
+#     db_session.add(new_order)
+#     db_session.commit()
+
+#     return jsonify({"success": True})
+
+
+# @app.route("/oplata", methods=["GET","POST"])
+# def process_order():
+#     if request.method == 'GET':
+#         address = request.args.get('address')
+#         recipient_name = request.args.get('recipient_name')
+#         recipient_phone = request.args.get('recipient_phone', 11, type=int)
+
+#         if address is None or recipient_name is None or recipient_phone is None:
+#             return 'Отсутствуют обязательные данные', 400
+
+#         return jsonify({
+#             'address': address,
+#             'recipient_name': recipient_name,
+#             'recipient_phone': recipient_phone,
+#         })
+
+#     else:
+#         return 'Метод POST не поддерживается для этого маршрута', 405
+     
 @manager.user_loader
 def load_user(user_id):
     from models import User
