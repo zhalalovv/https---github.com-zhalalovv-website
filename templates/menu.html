@@ -109,7 +109,9 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="order-form">
+            <form id="order-form" method="POST" {
+              
+            }>
               <div class="form-group">
                 <label for="address">Адрес</label>
                 <input
@@ -267,10 +269,6 @@
         itemInfoElement.textContent = `Ваш заказ: ${dishIds.length} товаров`;
 
         $("#paymentModal").modal("show");
-      }
-
-      function showCart() {
-        console.log(cart);
       }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
