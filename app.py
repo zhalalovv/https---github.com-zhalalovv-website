@@ -1,6 +1,6 @@
 import os
 import uuid
-import settings
+from datetime import datetime
 from flask_login import LoginManager
 from flask import Flask, g, render_template, request, redirect, url_for, jsonify
 
@@ -40,72 +40,21 @@ def restaurant_by_id(id):
     else:
         return render_template("404.htm"), 404
     
-def oplata_tovara_by_post():
-    from models import db_session, Order
-    if request.method == "GET":
-        return render_template("menu.html")
-    # Получение данных из запроса
-    order_data = request.json
-
-    # Создание нового заказа
+@app.route('/restaurant/<int:id>/menu', methods=['POST'])
+def create_order(id):
+    from models import db_session, Order, OrderDish    
     new_order = Order(
-        restaurant_id=order_data.get("restaurant_id"),
-        order_date=order_data.get("order_date"),
-        total=order_data.get("total"),
-        address=order_data.get("address"),
-        recipient_name=order_data.get("recipient_name"),
-        recipient_phone=order_data.get("recipient_phone")
+        restaurant_id = id,
+        order_date = datetime.now(),
+        total = request.form.get('total'),
+        address=request.form.get('address'),
+        recipient_name=request.form.get('recipient_name'),
+        recipient_phone=request.form.get('recipient_phone')
     )
-
-    # Сохранение заказа в базе данных
     db_session.add(new_order)
     db_session.commit()
+    return redirect(url_for('index'))
 
-    return jsonify({"success": True})
-
-# @app.route("/menu", methods=["GET","POST"])
-# def oplata_tovara_by_post():
-#     from models import db_session, Order
-#     if request.method == "GET":
-#         return render_template("menu.html")
-#     # Получение данных из запроса
-#     order_data = request.json
-
-#     # Создание нового заказа
-#     new_order = Order(
-#         restaurant_id=order_data.get("restaurant_id"),
-#         order_date=order_data.get("order_date"),
-#         total=order_data.get("total"),
-#         address=order_data.get("address"),
-#         recipient_name=order_data.get("recipient_name"),
-#         recipient_phone=order_data.get("recipient_phone")
-#     )
-
-#     # Сохранение заказа в базе данных
-#     db_session.add(new_order)
-#     db_session.commit()
-
-#     return jsonify({"success": True})
-
-
-# @app.route("/oplata", methods=["GET","POST"])
-# def process_order():
-#     if request.method == 'GET':
-#         address = request.args.get('address')
-#         recipient_name = request.args.get('recipient_name')
-#         recipient_phone = request.args.get('recipient_phone', 11, type=int)
-
-#         if address is None or recipient_name is None or recipient_phone is None:
-#             return 'Отсутствуют обязательные данные', 400
-
-#         return jsonify({
-#             'address': address,
-#             'recipient_name': recipient_name,
-#             'recipient_phone': recipient_phone,
-#         })
-
-#     else:
-#         return 'Метод POST не поддерживается для этого маршрута', 405
      
 @manager.user_loader
 def load_user(user_id):

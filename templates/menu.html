@@ -1,235 +1,268 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
     <title>Меню ресторана</title>
-</head>
-<body>
-<div class="container-fluid">
-    <div class="row">
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
         <div class="col-md-3 left-menu">
-            <div class="col-md-1">
-                <a href="/" class="btn btn-primary mt-3">Вернуться</a>
-            </div>
-            <h2>Меню</h2>
-            <ul class="list-group">
-                {% for category in categories %}
-                <li class="list-group-item">
-                    <a href="#{{ category }}">{{ category }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+          <div class="col-md-1">
+            <a href="/" class="btn btn-primary mt-3">Вернуться</a>
+          </div>
+          <h2>Меню</h2>
+          <ul class="list-group">
+            {% for category in categories %}
+            <li class="list-group-item">
+              <a href="#{{ category }}">{{ category }}</a>
+            </li>
+            {% endfor %}
+          </ul>
         </div>
 
         <div class="col-md-6 center-content">
-            <h1>Меню ресторана {{ restaurant.name }}</h1>
-            {% for category, dishes in categories.items() %}
-            <div id="{{ category }}" class="mt-4">
-                <h2>{{ category }}</h2>
-                {% for dish in dishes %}
-                <div class="card">
-                    <img
-                        src="{{ dish.photo }}"
-                        class="card-img-top"
-                        alt="{{ dish.name }}"
-                    />
-                    <div class="card-body">
-                        <h3 class="card-title">{{ dish.name }}</h3>
-                        <p class="card-text">{{ dish.description }}</p>
-                        <p class="card-text">Цена: {{ dish.price }} Р</p>
-                        <p class="card-text">Кол-во грамм: {{ dish.weight }}</p>
-                        <button
-                            class="btn btn-primary"
-                            onclick="addToCart('{{ dish.id }}', '{{ dish.name }}', '{{ dish.price }}', '{{ dish.weight }}', '{{ dish.photo }}')"
-                        >
-                            Добавить в корзину
-                        </button>
-                    </div>
-                </div>
-                {% endfor %}
+          <h1>Меню ресторана {{ restaurant.name }}</h1>
+          {% for category, dishes in categories.items() %}
+          <div id="{{ category }}" class="mt-4">
+            <h2>{{ category }}</h2>
+            {% for dish in dishes %}
+            <div class="card">
+              <img
+                src="{{ dish.photo }}"
+                class="card-img-top"
+                alt="{{ dish.name }}"
+              />
+              <div class="card-body">
+                <h3 class="card-title">{{ dish.name }}</h3>
+                <p class="card-text">{{ dish.description }}</p>
+                <p class="card-text">Цена: {{ dish.price }} Р</p>
+                <p class="card-text">Кол-во грамм: {{ dish.weight }}</p>
+                <button
+                  class="btn btn-primary"
+                  onclick="addToCart('{{ dish.id }}', '{{ dish.name }}', '{{ dish.price }}', '{{ dish.weight }}', '{{ dish.photo }}')"
+                >
+                  Добавить в корзину
+                </button>
+              </div>
             </div>
             {% endfor %}
+          </div>
+          {% endfor %}
         </div>
 
         <div class="col-md-3 right-cart">
-            <h2>Корзина</h2>
-            <ul id="cart-list" class="list-group">
-                <!-- Список товаров в корзине -->
-            </ul>
-            <p id="total">Итого: $0</p>
-            <a href="#" id="paymentButton" class="btn btn-success" data-toggle="modal" data-target="#paymentModal" style="background-color: blue;">Оплатить</a>
+          <h2>Корзина</h2>
+          <ul id="cart-list" class="list-group">
+            <!-- Список товаров в корзине -->
+          </ul>
+          <p id="total">Итого: 0 P</p>
+          <button
+            href="#"
+            id="paymentButton"
+            class="btn btn-success"
+            onclick="prepareOrder()"
+            style="background-color: blue"
+          >
+            Оплатить
+          </button>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- Модальное окно оплаты -->
-<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <!-- Модальное окно оплаты -->
+    <div
+      class="modal fade"
+      id="paymentModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="paymentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Оплата заказа</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="order-form" method="POST">
-                    <div class="form-group">
-                        <label for="address">Адрес</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="address"
-                            name="address"
-                            placeholder="Введите ваш адрес"
-                            required
-                        />
-                    </div>
+          <div class="modal-header">
+            <h5 class="modal-title" id="paymentModalLabel">Оплата заказа</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="order-form" method="POST">
+              <div class="form-group">
+                <label for="address">Адрес</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  name="address"
+                  placeholder="Введите ваш адрес"
+                  required
+                />
+              </div>
 
-                    <div class="form-group">
-                        <label for="name">Имя получателя</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="name"
-                            name="recipient_name"
-                            placeholder="Введите имя"
-                            required
-                        />
-                    </div>
+              <div class="form-group">
+                <label for="name">Имя получателя</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="recipient_name"
+                  placeholder="Введите имя"
+                  required
+                />
+              </div>
 
-                    <div class="form-group">
-                        <label for="phone">Телефон</label>
-                        <input
-                            type="tel"
-                            class="form-control"
-                            id="phone"
-                            name="recipient_phone"
-                            placeholder="Введите телефон"
-                            required
-                        />
-                    </div>
+              <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  name="recipient_phone"
+                  placeholder="Введите телефон"
+                  required
+                />
+              </div>
 
-                    <div class="form-group">
-                        <label for="payment">Способ оплаты</label>
-                        <select class="form-control" id="payment" required>
-                            <option value="card">Карта</option>
-                            <option value="cash">Наличные</option>
-                        </select>
-                    </div>
-
-                    <p id="item-info"></p>
-                    <button type="submit" class="btn btn-success" style="background-color: blue">Оплатить товар</button>
-                </form>
-            </div>
+              <div class="form-group">
+                <label for="payment">Способ оплаты</label>
+                <select class="form-control" id="payment" required>
+                  <option value="card">Карта</option>
+                  <option value="cash">Наличные</option>
+                </select>
+              </div>
+              <p id="item-info"></p>
+              <button
+                type="submit"
+                class="btn btn-success"
+                style="background-color: blue"
+              >
+                Оплатить товар
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<script>
-  // Список для хранения товаров, к которому можно обращаться (id, restaurant_id, order_date, total)
-  // Брать данные из формы, которую сделал (address, recipient_name, recipient_phone)
-  // Выгружать эти данные в БД (db_session)
+    <script>
+      let cart = {}; // Объект для хранения товаров в корзине
 
-    let cart = {}; // Объект для хранения товаров в корзине
-
-    // Функция для добавления товара в корзину
-    function addToCart(id, name, price, weight, photo) {
+      // Функция для добавления товара в корзину
+      function addToCart(id, name, price, weight, photo) {
         if (id in cart) {
-            cart[id].quantity += 1;
+          cart[id].quantity += 1;
         } else {
-            cart[id] = {
-                name: name,
-                price: price,
-                weight: weight,
-                photo: photo,
-                quantity: 1,
-            };
+          cart[id] = {
+            name: name,
+            price: price,
+            weight: weight,
+            photo: photo,
+            quantity: 1,
+            dish_id: id,
+          };
         }
         updateCartDisplay();
-    }
+      }
 
-    // Функция для обновления отображения корзины
-    function updateCartDisplay() {
+      // Функция для обновления отображения корзины
+      function updateCartDisplay() {
         const cartList = document.getElementById("cart-list");
         cartList.innerHTML = ""; // Очищаем содержимое корзины перед обновлением
 
         for (let id in cart) {
-            const item = cart[id];
-            const listItem = document.createElement("li");
-            listItem.className = "list-group-item";
-            listItem.innerHTML = `
-                    <div class="row">
-                        <div class="col-2">
-                            <img src="${item.photo}" alt="${item.name}" class="img-fluid">
-                        </div>
-                        <div class="col-6">
-                            <p>${item.name}</p>
-                            <p>Цена: ${item.price} Р</p>
-                            <p>Кол-во грамм: ${item.weight}</p>
-                        </div>
-                        <div class="col-4">
-                            <p>Кол-во: ${item.quantity}</p>
-                            <button class="btn btn-sm btn-danger" onclick="removeFromCart('${id}')">-</button>
-                            <button class="btn btn-sm btn-success" onclick="addToCart('${id}', '${item.name}', '${item.price}', '${item.weight}', '${item.photo}')">+</button>
-                        </div>
-                    </div>
-                `;
-            cartList.appendChild(listItem);
+          const item = cart[id];
+          const listItem = document.createElement("li");
+          listItem.className = "list-group-item";
+          listItem.innerHTML = `
+                  <div class="row">
+                      <div class="col-2">
+                          <img src="${item.photo}" alt="${item.name}" class="img-fluid">
+                      </div>
+                      <div class="col-6">
+                          <p>${item.name}</p>
+                          <p>Цена: ${item.price} Р</p>
+                          <p>Кол-во грамм: ${item.weight}</p>
+                      </div>
+                      <div class="col-4">
+                          <p>Кол-во: ${item.quantity}</p>
+                          <button class="btn btn-sm btn-danger" onclick="removeFromCart('${id}')">-</button>
+                          <button class="btn btn-sm btn-success" onclick="addToCart('${id}', '${item.name}', '${item.price}', '${item.weight}', '${item.photo}')">+</button>
+                      </div>
+                  </div>
+              `;
+          cartList.appendChild(listItem);
         }
 
         updateTotal();
-    }
+      }
 
-    // Функция для удаления товара из корзины
-    function removeFromCart(id) {
+      // Функция для удаления товара из корзины
+      function removeFromCart(id) {
         if (cart[id].quantity === 1) {
-            delete cart[id];
+          delete cart[id];
         } else {
-            cart[id].quantity -= 1;
+          cart[id].quantity -= 1;
         }
         updateCartDisplay();
-    }
+      }
 
-    // Функция для обновления общей стоимости товаров в корзине
-    function updateTotal() {
-    let total = 0;
-    for (let id in cart) {
-        total += cart[id].price * cart[id].quantity;
-    }
-    const totalElement = document.getElementById("total");
-    totalElement.textContent = `Итого: ${total} Р`;
+      // Функция для обновления общей стоимости товаров в корзине
+      function updateTotal() {
+        let total = 0;
+        for (let id in cart) {
+          total += cart[id].price * cart[id].quantity;
+        }
+        const totalElement = document.getElementById("total");
+        totalElement.textContent = `Итого: ${total} Р`;
+      }
 
-    // Сбор данных из формы
-    const address = document.getElementById("address").value;
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
+      // Генерация уникального ID для заказа
+      function generateOrderId() {
+        return Math.floor(Math.random() * 1000000);
+      }
 
-    // Формирование объекта с данными заказа
-    const orderData = {
-        items: Object.values(cart),
-        address: address,
-        recipient_name: name,
-        recipient_phone: phone
-    };
+      // Вычисление общей стоимости заказа
+      function calculateTotalPrice() {
+        let totalPrice = 0;
+        for (let id in cart) {
+          totalPrice += cart[id].price * cart[id].quantity;
+        }
+        return totalPrice;
+      }
 
-    // Отправка данных на сервер с помощью Axios
-    axios.post('/menu', orderData)
-        .then(function (response) {
-            console.log('Данные успешно отправлены на сервер', response);
-            // Возможно, здесь вы хотите выполнить какие-то дополнительные действия после успешной отправки данных
-        })
-        .catch(function (error) {
-            console.error('Произошла ошибка при отправке данных на сервер', error);
-        });
-}
+      // Подготовка данных о заказе и отображение модального окна оплаты
+      function prepareOrder() {
+        const dishIds = Object.keys(cart);
+        if (dishIds.length === 0) {
+          alert(
+            "Ваша корзина пуста. Пожалуйста, добавьте товары перед оформлением заказа."
+          );
+          return;
+        }
 
-</script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+        const itemInfoElement = document.getElementById("item-info");
+        itemInfoElement.textContent = `Ваш заказ: ${dishIds.length} товаров`;
+
+        $("#paymentModal").modal("show");
+      }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
 </html>

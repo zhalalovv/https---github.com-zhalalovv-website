@@ -16,7 +16,7 @@ def register():
     db_session.add(user)
     db_session.commit()
     login_user(user)
-    return render_template('registration.html')
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 @login_required
