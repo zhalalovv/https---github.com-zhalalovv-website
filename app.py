@@ -55,6 +55,10 @@ def create_order(id):
     db_session.commit()
     return redirect(url_for('index'))
 
+@app.route('/korzina')
+def korzina():
+    return render_template("korzina.html")
+
      
 @manager.user_loader
 def load_user(user_id):

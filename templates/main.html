@@ -23,7 +23,7 @@
       style="background-color: yellow"
     >
       <a href="/" class="navbar-brand h1" href="#">Food delivery</a>
-      <div class="d-flex mr-auto">
+      <div class="d-flex ml-auto">
         <form class="d-flex">
           <input
             class="form-control me-2"
@@ -42,20 +42,27 @@
           >
         </form>
         {% if current_user.is_authenticated %}
-        <p>Имя пользователя: {{ current_user.login }}</p>
+        <p class="my-auto mx-3">Имя пользователя: {{ current_user.login }}</p>
+        <a
+          href="/logout"
+          class="btn btn-primary"
+          style="background-color: yellow; color: black"
+          >Выйти</a
+        >
+        {% else %}
+        <a
+          href="/login"
+          class="btn btn-primary"
+          data-bs-toggle="collapse"
+          href="#collapseExample"
+          role="button"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+          style="background-color: yellow; color: black"
+          >Вход</a
+        >
         {% endif %}
       </div>
-      <a
-        href="/login"
-        class="btn btn-primary"
-        data-bs-toggle="collapse"
-        href="#collapseExample"
-        role="button"
-        aria-expanded="false"
-        aria-controls="collapseExample"
-        style="background-color: yellow; color: black"
-        >Вход</a
-      >
     </nav>
 
     {% block content %}{% endblock %}

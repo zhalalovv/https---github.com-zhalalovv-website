@@ -1,0 +1,24 @@
+{% extends "main.html" %} {% block title %}Корзина{% endblock %} {% block content
+%}
+<body>
+    <div class="container">
+      <h1>Корзина</h1>
+      <div id="cart-items">
+        <!-- Здесь будут отображаться товары в корзине -->
+      </div>
+      <div id="total-price">
+        <!-- Здесь будет отображаться общая стоимость заказа -->
+      </div>
+      <button class="btn btn-primary" href="#"            {%
+        if
+        not
+        current_user.is_authenticated
+        %}
+        disabled
+        {%
+        endif
+        %}>Оформить заказ</button>
+    </div>
+  </body>
+  </html>
+  {% endblock %}
