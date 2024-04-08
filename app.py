@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from flask_login import LoginManager
 from flask import Flask, g, render_template, request, redirect, url_for, jsonify
+from sqlalchemy.exc import SQLAlchemyError
 
 
 app = Flask(__name__, template_folder="templates")
@@ -24,6 +25,22 @@ def index():
 def search():
     return render_template("search_res.html")
 
+@app.route('/admin_panel')
+def admin_panel():
+    from models import db_session, OrderDish, Order
+    # Создаем сессию базы данных
+    session = db_session()
+    # Получаем данные из таблицы OrderDish
+    order_dishes = session.query(OrderDish).all()
+    # Получаем данные из таблицы Dish
+    orders = session.query(Order).all()
+    # Закрываем сессию базы данных
+    session.close()
+    # Объединяем данные в список кортежей
+    data = zip(order_dishes, orders)
+    # Рендерим HTML-шаблон и передаем данные на страницу
+    return render_template('admin_panel.html', data=data)
+
 @app.route("/restaurant/<int:id>/menu")
 def restaurant_by_id(id):
     from models import db_session, Restaurant, Dish
@@ -42,18 +59,44 @@ def restaurant_by_id(id):
     
 @app.route('/restaurant/<int:id>/menu', methods=['POST'])
 def create_order(id):
-    from models import db_session, Order, OrderDish    
+    from models import db_session, Order, OrderDish, Dish
+    from datetime import datetime
+    order_data = request.json
+    # Создание нового заказа
     new_order = Order(
-        restaurant_id = id,
-        order_date = datetime.now(),
-        total = request.form.get('total'),
-        address=request.form.get('address'),
-        recipient_name=request.form.get('recipient_name'),
-        recipient_phone=request.form.get('recipient_phone')
+        restaurant_id=id,
+        order_date=datetime.now(),
+        total=order_data.get('total'),
+        address=order_data.get('address'),
+        recipient_name=order_data.get('recipient_name'),
+        recipient_phone=order_data.get('recipient_phone')
     )
+
+    # Добавление заказа в базу данных и сохранение изменений
     db_session.add(new_order)
+    db_session.flush()
+    
+    # Добавление блюд в заказ
+    for dish_data in order_data.get('dishes', []):
+        dish_id = dish_data['dish_id']
+        quantity = dish_data['quantity']
+        
+        # Получение цены блюда из базы данных
+        dish = db_session.query(Dish).filter(Dish.id == dish_id).first()
+        price = dish.price
+        
+        # Создание записи о блюде в заказе
+        order_dish = OrderDish(
+            order_id=new_order.id,
+            dish_id=dish_id,
+            quantity=quantity,
+            price=price
+        )
+        db_session.add(order_dish)
     db_session.commit()
+    
     return redirect(url_for('index'))
+
 
 @app.route('/korzina')
 def korzina():

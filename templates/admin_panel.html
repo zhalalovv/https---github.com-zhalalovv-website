@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block title %}Панель администратора{% endblock %}
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID Заказа</th>
+            <th>ID Блюда</th>
+            <th>Количество</th>
+            <th>Цена блюда</th>
+            <th>Адрес доставки</th>
+            <th>Имя заказчика</th>
+            <th>Телефон заказчика</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_dish, order in data %}
+        <tr>
+            <td>{{ order_dish.order_id }}</td>
+            <td>{{ order_dish.dish_id }}</td>
+            <td>{{ order_dish.quantity }}</td>
+            <td>{{ order_dish.price }}</td>
+            <td>{{ order.address }}</td>
+            <td>{{ order.recipient_name }}</td>
+            <td>{{ order.recipient_phone }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

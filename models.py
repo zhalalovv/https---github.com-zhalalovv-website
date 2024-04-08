@@ -53,8 +53,10 @@ class Order(Base):
 # Таблица "Заказ - Блюдо"
 class OrderDish(Base):
     __tablename__ = 'order_dishes'
-    order_id = Column(Integer, ForeignKey('orders.id'), primary_key=True)
-    dish_id = Column(Integer, ForeignKey('dishes.id'), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    order_id = Column(Integer, ForeignKey('orders.id'))
+    dish_id = Column(Integer, ForeignKey('dishes.id'))
+    quantity = Column(Integer)
     price = Column(Integer)
     # Отношение между блюдом и заказом
     dish = relationship('Dish', back_populates='orders')

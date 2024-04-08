@@ -61,7 +61,7 @@
         <div class="col-md-3 right-cart">
           <h2>Корзина</h2>
           <ul id="cart-list" class="list-group">
-            <!-- Список товаров в корзине -->
+             <!-- Список товаров в корзине -->
           </ul>
           <p id="total">Итого: 0 P</p>
           <button
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <!-- Модальное окно оплаты -->
+     <!-- Модальное окно оплаты -->
     <div
       class="modal fade"
       id="paymentModal"
@@ -109,9 +109,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="order-form" method="POST" {
-              
-            }>
+            <form id="order-form" data-restaurant-id="{{ restaurant.id }}" method="POST">
               <div class="form-group">
                 <label for="address">Адрес</label>
                 <input
@@ -199,22 +197,22 @@
           const listItem = document.createElement("li");
           listItem.className = "list-group-item";
           listItem.innerHTML = `
-                  <div class="row">
-                      <div class="col-2">
-                          <img src="${item.photo}" alt="${item.name}" class="img-fluid">
-                      </div>
-                      <div class="col-6">
-                          <p>${item.name}</p>
-                          <p>Цена: ${item.price} Р</p>
-                          <p>Кол-во грамм: ${item.weight}</p>
-                      </div>
-                      <div class="col-4">
-                          <p>Кол-во: ${item.quantity}</p>
-                          <button class="btn btn-sm btn-danger" onclick="removeFromCart('${id}')">-</button>
-                          <button class="btn btn-sm btn-success" onclick="addToCart('${id}', '${item.name}', '${item.price}', '${item.weight}', '${item.photo}')">+</button>
-                      </div>
-                  </div>
-              `;
+                <div class="row">
+                    <div class="col-2">
+                        <img src="${item.photo}" alt="${item.name}" class="img-fluid">
+                    </div>
+                    <div class="col-6">
+                        <p>${item.name}</p>
+                        <p>Цена: ${item.price} Р</p>
+                        <p>Кол-во грамм: ${item.weight}</p>
+                    </div>
+                    <div class="col-4">
+                        <p>Кол-во: ${item.quantity}</p>
+                        <button class="btn btn-sm btn-danger" onclick="removeFromCart('${id}')">-</button>
+                        <button class="btn btn-sm btn-success" onclick="addToCart('${id}', '${item.name}', '${item.price}', '${item.weight}', '${item.photo}')">+</button>
+                    </div>
+                </div>
+            `;
           cartList.appendChild(listItem);
         }
 
@@ -270,8 +268,51 @@
 
         $("#paymentModal").modal("show");
       }
+
+      document
+  .getElementById("order-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault(); // Предотвращение стандартного действия отправки формы
+
+    const restaurantId = this.getAttribute("data-restaurant-id"); // Получаем id ресторана из атрибута data-restaurant-id формы
+    const address = document.getElementById("address").value;
+    const recipient_name = document.getElementById("name").value;
+    const recipient_phone = document.getElementById("phone").value;
+    // Сбор данных о заказе
+    const order = {
+    address: address,
+    recipient_name: recipient_name,
+    recipient_phone: recipient_phone,
+    order_id: generateOrderId(),
+    dishes: Object.values(cart), // Получаем первый id блюда из корзины
+    total: calculateTotalPrice(), // Получаем общую цену заказа
+    };
+
+    // Вывод данных о заказе в консоль
+    console.log("Данные о заказе:");
+    console.log(JSON.stringify(order, null, 2)); // Форматирование с отступами для удобства чтения
+
+    // Отправка данных на сервер в формате JSON
+    fetch(`/restaurant/${restaurantId}/menu`, {
+      method: "POST",
+      body: JSON.stringify(order), // Преобразуем объект в JSON-строку
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Преобразование ответа сервера в JSON
+      })
+      .then((data) => {
+        console.log("Ответ сервера:");
+        console.log(JSON.stringify(data, null, 2)); // Форматирование с отступами для удобства чтения
+        alert("Данные от сервера: " + JSON.stringify(data));
+      })
+  });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
