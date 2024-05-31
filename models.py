@@ -1,10 +1,8 @@
-# -*- coding: UTF-8 -*-
 from sqlalchemy import Column,  Integer,Float,Date,  DateTime, Text, Boolean, String, ForeignKey, or_, not_
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import relationship, query_expression
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database import Base, db_session, engine as db_engine
-import datetime
 from flask_login import UserMixin
 from app import manager
 
