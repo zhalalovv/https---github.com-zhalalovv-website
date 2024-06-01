@@ -35,13 +35,13 @@
             <h2>{{ category }}</h2>
             {% for dish in dishes %}
             <div class="card">
-              <img src="{{ url_for('static', filename=dish.photo) }}" class="card-img-top" alt="{{ dish.name }}" />
+              <img src="{{ dish.photo }}" class="card-img-top" alt="{{ dish.name }}" />
               <div class="card-body">
                 <h3 class="card-title">{{ dish.name }}</h3>
                 <p class="card-text">{{ dish.description }}</p>
                 <p class="card-text">Цена: {{ dish.price }} Р</p>
                 <p class="card-text">Кол-во грамм: {{ dish.weight }}</p>
-                <button class="btn btn-primary" onclick="addToCart('{{ dish.id }}', '{{ dish.name }}', '{{ dish.price }}', '{{ dish.weight }}')">Добавить в корзину</button>
+                <button class="btn btn-primary" onclick="addToCart('{{ dish.id }}', '{{ dish.name }}', '{{ dish.price }}', '{{ dish.weight }}', '{{ dish.photo }}')">Добавить в корзину</button>
               </div>
             </div>
             {% endfor %}
@@ -175,6 +175,7 @@
             dish_id: id,
           };
         }
+        console.log(photo)
         updateCartDisplay();
       }
 
