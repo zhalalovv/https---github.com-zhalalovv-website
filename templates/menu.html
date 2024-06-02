@@ -33,18 +33,22 @@
           {% for category, dishes in categories.items() %}
           <div id="{{ category }}" class="mt-4">
             <h2>{{ category }}</h2>
-            {% for dish in dishes %}
-            <div class="card">
-              <img src="{{ dish.photo }}" class="card-img-top" alt="{{ dish.name }}" />
-              <div class="card-body">
-                <h3 class="card-title">{{ dish.name }}</h3>
-                <p class="card-text">{{ dish.description }}</p>
-                <p class="card-text">Цена: {{ dish.price }} Р</p>
-                <p class="card-text">Кол-во грамм: {{ dish.weight }}</p>
-                <button class="btn btn-primary" onclick="addToCart('{{ dish.id }}', '{{ dish.name }}', '{{ dish.price }}', '{{ dish.weight }}', '{{ dish.photo }}')">Добавить в корзину</button>
+            <div class="row">
+              {% for dish in dishes %}
+              <div class="col-md-6 mb-4">
+                <div class="card">
+                  <img src="{{ dish.photo }}" class="card-img-top" alt="{{ dish.name }}" />
+                  <div class="card-body">
+                    <h3 class="card-title">{{ dish.name }}</h3>
+                    <p class="card-text">{{ dish.description }}</p>
+                    <p class="card-text">Цена: {{ dish.price }} Р</p>
+                    <p class="card-text">Кол-во грамм: {{ dish.weight }}</p>
+                    <button class="btn btn-primary" onclick="addToCart('{{ dish.id }}', '{{ dish.name }}', '{{ dish.price }}', '{{ dish.weight }}', '{{ dish.photo }}')">Добавить в корзину</button>
+                  </div>
+                </div>
               </div>
+              {% endfor %}
             </div>
-            {% endfor %}
           </div>
           {% endfor %}
         </div>
@@ -52,7 +56,7 @@
         <div class="col-md-3 right-cart">
           <h2>Корзина</h2>
           <ul id="cart-list" class="list-group">
-             <!-- Список товаров в корзине -->
+            <!-- Список товаров в корзине -->
           </ul>
           <p id="total">Итого: 0 P</p>
           <button
@@ -175,7 +179,6 @@
             dish_id: id,
           };
         }
-        console.log(photo)
         updateCartDisplay();
       }
 
