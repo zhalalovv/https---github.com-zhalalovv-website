@@ -23,7 +23,18 @@ def index():
 
 @app.route("/search")
 def search():
-    return render_template("search_res.html")
+    from models import db_session, Restaurant
+    query = request.args.get('query', '').strip()
+    if not query:
+        return render_template("search_res.html", query=query, results=None)
+
+    results = db_session.query(Restaurant).filter(
+        Restaurant.name.ilike(f'%{query}%')
+    ).all()
+
+    return render_template("search_res.html", query=query, results=results)
+
+
 
 @app.route('/admin_panel')
 def admin_panel():
@@ -96,6 +107,8 @@ def create_order(id):
     db_session.commit()
     
     return redirect(url_for('index'))
+
+
 
 
 @app.route('/korzina')
