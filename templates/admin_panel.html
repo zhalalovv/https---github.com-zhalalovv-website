@@ -2,6 +2,17 @@
 {% block title %}Панель администратора{% endblock %}
 {% block content %}
 
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+</style>
+
 <table>
     <thead>
         <tr>
@@ -24,6 +35,16 @@
             <td>{{ order.address }}</td>
             <td>{{ order.recipient_name }}</td>
             <td>{{ order.recipient_phone }}</td>
+        </tr>
+        <!-- Добавляем вертикальные линии -->
+        <tr>
+            <td style="border-right: 1px solid #ddd;"></td>
+            <td style="border-right: 1px solid #ddd;"></td>
+            <td style="border-right: 1px solid #ddd;"></td>
+            <td style="border-right: 1px solid #ddd;"></td>
+            <td style="border-right: 1px solid #ddd;"></td>
+            <td style="border-right: 1px solid #ddd;"></td>
+            <td></td>
         </tr>
         {% endfor %}
     </tbody>

@@ -2,7 +2,7 @@ import os
 import uuid
 from datetime import datetime
 from flask_login import LoginManager
-from flask import Flask, g, render_template, request, redirect, url_for, jsonify
+from flask import Flask, g, render_template, request, redirect, url_for, jsonify, redirect
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -34,8 +34,6 @@ def search():
 
     return render_template("search_res.html", query=query, results=results)
 
-
-
 @app.route('/admin_panel')
 def admin_panel():
     from models import db_session, OrderDish, Order
@@ -43,14 +41,25 @@ def admin_panel():
     session = db_session()
     # Получаем данные из таблицы OrderDish
     order_dishes = session.query(OrderDish).all()
-    # Получаем данные из таблицы Dish
+    # Получаем данные из таблицы Order
     orders = session.query(Order).all()
     # Закрываем сессию базы данных
     session.close()
-    # Объединяем данные в список кортежей
-    data = zip(order_dishes, orders)
+
+    # Создаем список для хранения всех данных
+    data = []
+
+    # Проходимся по каждому заказу
+    for order in orders:
+        # Получаем все товары, связанные с этим заказом
+        order_dishes_for_order = [od for od in order_dishes if od.order_id == order.id]
+        # Добавляем каждый товар в список data
+        for order_dish in order_dishes_for_order:
+            data.append((order_dish, order))
+
     # Рендерим HTML-шаблон и передаем данные на страницу
     return render_template('admin_panel.html', data=data)
+
 
 @app.route("/restaurant/<int:id>/menu")
 def restaurant_by_id(id):
@@ -105,16 +114,17 @@ def create_order(id):
         )
         db_session.add(order_dish)
     db_session.commit()
-    
     return redirect(url_for('index'))
-
-
 
 
 @app.route('/korzina')
 def korzina():
     return render_template("korzina.html")
 
+@app.route('/login')
+def user_login():
+    return render_template("login.html")
+    
      
 @manager.user_loader
 def load_user(user_id):
