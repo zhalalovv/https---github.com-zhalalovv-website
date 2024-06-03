@@ -4,7 +4,7 @@ body {
 
 .left-menu {
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: white;
 }
 
 .left-menu h2 {
@@ -21,7 +21,7 @@ body {
 
 .right-cart {
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: white;
 }
 
 .right-cart h2 {

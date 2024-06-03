@@ -1,9 +1,7 @@
 import os
 import uuid
-from datetime import datetime
 from flask_login import LoginManager
-from flask import Flask, g, render_template, request, redirect, url_for, jsonify, redirect
-from sqlalchemy.exc import SQLAlchemyError
+from flask import Flask, render_template, request, redirect, url_for
 
 
 app = Flask(__name__, template_folder="templates")
